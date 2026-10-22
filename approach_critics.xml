@@ -1,0 +1,9 @@
+<library path="scan345_approach_critics">
+<class type="mppi::critics::JointTrajectoryCritic" base_class_type="mppi::critics::CriticFunction"/>
+<class type="mppi::critics::ApproachGoalCritic" base_class_type="mppi::critics::CriticFunction"/>
+<class type="mppi::critics::ApproachGoalAngleCritic" base_class_type="mppi::critics::CriticFunction"/>
+<class type="mppi::critics::ApproachPathAlignCritic" base_class_type="mppi::critics::CriticFunction"/>
+<class type="mppi::critics::ApproachPathFollowCritic" base_class_type="mppi::critics::CriticFunction"/>
+<class type="mppi::critics::ApproachPathAngleCritic" base_class_type="mppi::critics::CriticFunction"/>
+<class type="mppi::critics::ApproachPreferForwardCritic" base_class_type="mppi::critics::CriticFunction"/>
+</library>

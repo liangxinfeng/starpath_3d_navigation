@@ -1,0 +1,245 @@
+/scan345/planner_server:
+  ros__parameters:
+    use_sim_time: false
+    expected_planner_frequency: 5.0
+    planner_plugins:
+    - GridBased
+    GridBased:
+      plugin: control_center_navigation::ExactGoalSmacPlanner
+      tolerance: 0.0
+      use_final_approach_orientation: false
+      downsample_costmap: false
+      downsampling_factor: 1
+      allow_unknown: false
+      max_iterations: 1000000
+      max_planning_time: 2.0
+      smooth_path: true
+      cost_travel_multiplier: 5.0
+      use_quadratic_cost: true
+/scan345/controller_server:
+  ros__parameters:
+    use_sim_time: false
+    controller_frequency: 15.0
+    min_x_velocity_threshold: 0.001
+    min_y_velocity_threshold: 0.0
+    min_theta_velocity_threshold: 0.001
+    failure_tolerance: 0.5
+    progress_checker_plugins:
+    - progress_checker
+    publish_zero_velocity: true
+    goal_checker_plugins:
+    - goal_checker
+    controller_plugins:
+    - FollowPath
+    progress_checker:
+      plugin: nav2_controller::PoseProgressChecker
+      required_movement_radius: 0.05
+      required_movement_angle: 0.1
+      movement_time_allowance: 20.0
+    goal_checker:
+      plugin: scan345::ApproachGoalChecker
+      xy_goal_tolerance: 0.05
+      yaw_goal_tolerance: 0.05
+      stateful: false
+      trans_stopped_velocity: 0.015
+      rot_stopped_velocity: 0.025
+    FollowPath:
+      plugin: scan345::ApproachMPPIController
+      approach_max_distance: 3.0
+      JointTrajectoryCritic:
+        enabled: true
+        position_weight: 24.0
+        heading_weight: 9.0
+        velocity_weight: 3.0
+      time_steps: 40
+      model_dt: 0.06666666666666667
+      batch_size: 1600
+      open_loop: false
+      iteration_count: 1
+      vx_std: 0.18
+      vy_std: 0.08
+      wz_std: 0.35
+      vx_max: 0.45
+      vx_min: -0.12
+      vy_max: 0.12
+      wz_max: 1.3
+      ax_max: 0.6
+      ax_min: -0.6
+      ay_max: 0.3
+      ay_min: -0.3
+      az_max: 1.8
+      temperature: 0.3
+      gamma: 0.015
+      motion_model: Omni
+      visualize: false
+      publish_optimal_trajectory: false
+      regenerate_noises: false
+      transform_tolerance: 0.2
+      prune_distance: 1.7
+      critics:
+      - JointTrajectoryCritic
+      - ConstraintCritic
+      - CostCritic
+      - ApproachGoalCritic
+      - ApproachGoalAngleCritic
+      - ApproachPathAlignCritic
+      - ApproachPathFollowCritic
+      - ApproachPathAngleCritic
+      - ApproachPreferForwardCritic
+      ConstraintCritic:
+        enabled: true
+        cost_power: 1
+        cost_weight: 4.0
+      CostCritic:
+        enabled: true
+        cost_power: 1
+        cost_weight: 3.81
+        near_collision_cost: 253
+        critical_cost: 300.0
+        consider_footprint: true
+        collision_cost: 1000000.0
+        near_goal_distance: 1.0
+        trajectory_point_step: 2
+      ApproachGoalCritic:
+        enabled: true
+        cost_power: 1
+        cost_weight: 10.0
+        threshold_to_consider: 1.3
+      ApproachGoalAngleCritic:
+        enabled: true
+        cost_power: 1
+        cost_weight: 5.0
+        threshold_to_consider: 0.8
+      ApproachPathAlignCritic:
+        enabled: true
+        cost_power: 1
+        cost_weight: 10.0
+        max_path_occupancy_ratio: 0.05
+        trajectory_point_step: 4
+        threshold_to_consider: 0.8
+        offset_from_furthest: 18
+        use_path_orientations: false
+      ApproachPathFollowCritic:
+        enabled: true
+        cost_power: 1
+        cost_weight: 6.0
+        offset_from_furthest: 5
+        threshold_to_consider: 0.15
+      ApproachPathAngleCritic:
+        enabled: true
+        cost_power: 1
+        cost_weight: 3.0
+        offset_from_furthest: 4
+        threshold_to_consider: 0.8
+        max_angle_to_furthest: 0.9
+        mode: 0
+      ApproachPreferForwardCritic:
+        enabled: true
+        cost_power: 1
+        cost_weight: 6.0
+        threshold_to_consider: 0.15
+    odom_topic: /scan345/nav2_odom
+    enable_stamped_cmd_vel: true
+/scan345/global_costmap/global_costmap:
+  ros__parameters:
+    use_sim_time: false
+    update_frequency: 2.0
+    publish_frequency: 1.0
+    global_frame: airy_global
+    robot_base_frame: scan345_base
+    transform_tolerance: 0.25
+    resolution: 0.05
+    footprint: '[[-0.2627294361591339, -0.16306938230991364], [-0.2550998330116272,
+      -0.17553813755512238], [-0.24986036121845245, -0.1759381890296936], [-0.21555505692958832,
+      -0.1773156374692917], [-0.19687104225158691, -0.17774106562137604], [-0.1888682097196579,
+      -0.17791685461997986], [0.1888682097196579, -0.17791685461997986], [0.19733650982379913,
+      -0.17774106562137604], [0.21280774474143982, -0.1773156374692917], [0.2573213577270508,
+      -0.17593716084957123], [0.2842642664909363, -0.12664352357387543], [0.2863774597644806,
+      -0.12203481048345566], [0.2912183105945587, -0.11120453476905823], [0.2958652079105377,
+      -0.09714585542678833], [0.2974994480609894, -0.09166993945837021], [0.2989055812358856,
+      -0.08371206372976303], [0.30029064416885376, -0.0746890977025032], [0.3029285669326782,
+      -0.036400582641363144], [0.30326780676841736, -0.02281545102596283], [0.30325672030448914,
+      -1.0021920359565284e-12], [0.3031119108200073, 0.013973074965178967], [0.30214521288871765,
+      0.05107293277978897], [0.30170494318008423, 0.06017482280731201], [0.2988848090171814,
+      0.08375245332717896], [0.2981322407722473, 0.08808322995901108], [0.29744431376457214,
+      0.09135515987873077], [0.29625606536865234, 0.09637818485498428], [0.2920420169830322,
+      0.10905659943819046], [0.2865636348724365, 0.12193280458450317], [0.2830631136894226,
+      0.1286129355430603], [0.25800690054893494, 0.17511287331581116], [0.25737446546554565,
+      0.17573265731334686], [0.25537368655204773, 0.1759304404258728], [0.20159663259983063,
+      0.17791685461997986], [-0.18579831719398499, 0.17791685461997986], [-0.19733650982379913,
+      0.17774106562137604], [-0.2152470201253891, 0.1773156374692917], [-0.2545320391654968,
+      0.17599999904632568], [-0.25579866766929626, 0.17554472386837006], [-0.26272761821746826,
+      0.16307321190834045], [-0.26751014590263367, 0.1490039974451065], [-0.26756036281585693,
+      0.11790989339351654], [-0.2675657272338867, 0.09185232222080231], [-0.2675603926181793,
+      -0.11791261285543442], [-0.2675449550151825, -0.14912638068199158], [-0.26729628443717957,
+      -0.1500803679227829]]'
+    footprint_padding: 0.0
+    track_unknown_space: true
+    always_send_full_costmap: true
+    plugins:
+    - static_layer
+    - inflation_layer
+    static_layer:
+      plugin: nav2_costmap_2d::StaticLayer
+      map_topic: /scan345/occupancy_static_map
+      map_subscribe_transient_local: true
+      subscribe_to_updates: false
+      track_unknown_space: true
+      transform_tolerance: 0.25
+    inflation_layer:
+      plugin: nav2_costmap_2d::InflationLayer
+      cost_scaling_factor: 1.8
+      inflation_radius: 0.65
+/scan345/local_costmap/local_costmap:
+  ros__parameters:
+    use_sim_time: false
+    update_frequency: 10.0
+    publish_frequency: 2.0
+    global_frame: scan345_odom
+    robot_base_frame: scan345_base
+    transform_tolerance: 0.25
+    resolution: 0.05
+    footprint: '[[-0.2627294361591339, -0.16306938230991364], [-0.2550998330116272,
+      -0.17553813755512238], [-0.24986036121845245, -0.1759381890296936], [-0.21555505692958832,
+      -0.1773156374692917], [-0.19687104225158691, -0.17774106562137604], [-0.1888682097196579,
+      -0.17791685461997986], [0.1888682097196579, -0.17791685461997986], [0.19733650982379913,
+      -0.17774106562137604], [0.21280774474143982, -0.1773156374692917], [0.2573213577270508,
+      -0.17593716084957123], [0.2842642664909363, -0.12664352357387543], [0.2863774597644806,
+      -0.12203481048345566], [0.2912183105945587, -0.11120453476905823], [0.2958652079105377,
+      -0.09714585542678833], [0.2974994480609894, -0.09166993945837021], [0.2989055812358856,
+      -0.08371206372976303], [0.30029064416885376, -0.0746890977025032], [0.3029285669326782,
+      -0.036400582641363144], [0.30326780676841736, -0.02281545102596283], [0.30325672030448914,
+      -1.0021920359565284e-12], [0.3031119108200073, 0.013973074965178967], [0.30214521288871765,
+      0.05107293277978897], [0.30170494318008423, 0.06017482280731201], [0.2988848090171814,
+      0.08375245332717896], [0.2981322407722473, 0.08808322995901108], [0.29744431376457214,
+      0.09135515987873077], [0.29625606536865234, 0.09637818485498428], [0.2920420169830322,
+      0.10905659943819046], [0.2865636348724365, 0.12193280458450317], [0.2830631136894226,
+      0.1286129355430603], [0.25800690054893494, 0.17511287331581116], [0.25737446546554565,
+      0.17573265731334686], [0.25537368655204773, 0.1759304404258728], [0.20159663259983063,
+      0.17791685461997986], [-0.18579831719398499, 0.17791685461997986], [-0.19733650982379913,
+      0.17774106562137604], [-0.2152470201253891, 0.1773156374692917], [-0.2545320391654968,
+      0.17599999904632568], [-0.25579866766929626, 0.17554472386837006], [-0.26272761821746826,
+      0.16307321190834045], [-0.26751014590263367, 0.1490039974451065], [-0.26756036281585693,
+      0.11790989339351654], [-0.2675657272338867, 0.09185232222080231], [-0.2675603926181793,
+      -0.11791261285543442], [-0.2675449550151825, -0.14912638068199158], [-0.26729628443717957,
+      -0.1500803679227829]]'
+    footprint_padding: 0.0
+    track_unknown_space: true
+    always_send_full_costmap: true
+    plugins:
+    - static_layer
+    - inflation_layer
+    static_layer:
+      plugin: nav2_costmap_2d::StaticLayer
+      map_topic: /scan345/occupancy_static_map
+      map_subscribe_transient_local: true
+      subscribe_to_updates: false
+      track_unknown_space: true
+      transform_tolerance: 0.25
+    inflation_layer:
+      plugin: nav2_costmap_2d::InflationLayer
+      cost_scaling_factor: 2.0
+      inflation_radius: 0.65
+    rolling_window: true
+    width: 7
+    height: 7

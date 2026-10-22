@@ -1,0 +1,5 @@
+string command
+string payload
+---
+bool success
+string message

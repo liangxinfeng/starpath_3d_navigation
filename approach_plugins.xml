@@ -1,0 +1,4 @@
+<library path="scan345_approach_mppi">
+<class type="scan345::ApproachMPPIController" base_class_type="nav2_core::Controller"/>
+<class type="scan345::ApproachGoalChecker" base_class_type="nav2_core::GoalChecker"/>
+</library>

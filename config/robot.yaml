@@ -1,0 +1,15 @@
+/**:
+  ros__parameters:
+    allow_hardware: false
+    max_speed: 0.15
+    max_yaw_rate: 0.3
+    body_radius: 0.36
+    body_offset: 0.12
+    body_top: 1.85
+    ground_clearance: 0.08
+    # SDK base->AIRY lidar; validate before changing a physical mounting.
+    base_lidar_xyz: [0.2634, 0.0, 0.2]
+    base_lidar_rpy: [0.0, 0.436332, 0.0]
+    # Real domain requires the native S3 model and an explicitly calibrated
+    # empty-gripper surface template. Arm/waist posture must stay fixed.
+    body_model_enabled: true

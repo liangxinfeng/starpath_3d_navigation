@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+<defs><linearGradient id="b" x2="1" y2="1"><stop stop-color="#102e4e"/><stop offset="1" stop-color="#176c79"/></linearGradient></defs>
+<rect x="8" y="8" width="240" height="240" rx="52" fill="url(#b)"/>
+<path d="M45 190V67h61v50h49V67h55v123" stroke="#73b8c3" stroke-width="12" fill="none" stroke-linejoin="round"/>
+<path d="M63 178h37v-40h75v40h22" stroke="#ffc46a" stroke-width="9" fill="none" stroke-linecap="round" stroke-dasharray="9 13"/>
+<path d="M128 54l-26 48 26-12 26 12z" fill="#fff"/>
+<circle cx="64" cy="178" r="12" fill="#75e7c5"/><circle cx="197" cy="178" r="13" fill="#ffb756"/>
+<text x="128" y="225" fill="white" font-family="sans-serif" text-anchor="middle" font-size="22" font-weight="bold">SCAN · 345</text>
+</svg>
